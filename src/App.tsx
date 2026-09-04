@@ -484,7 +484,7 @@ function CardStack({ wants, profile, onSelect }: {
   const behindCount = Math.min(behind.length, 2)
 
   return (
-    <div>
+    <div style={{ maxWidth:480, margin:"0 auto", width:"100%" }}>
       <div style={{ position:"relative", paddingBottom: behindCount * 10 }}
         onTouchStart={ts} onTouchMove={tm} onTouchEnd={te}>
         {/* Behind cards — blank strips, no content bleed */}
@@ -532,8 +532,39 @@ function CardStack({ wants, profile, onSelect }: {
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
-// BOTTOM NAVIGATION
 // ─────────────────────────────────────────────────────────────────────────────
+// DESKTOP & MOBILE NAVIGATION
+// ─────────────────────────────────────────────────────────────────────────────
+function DesktopHeader({ screen, navigate, onAdd }: { screen: Screen; navigate: (s: Screen) => void; onAdd: () => void }) {
+  const tabs = [
+    { id:"home",     label:"WANTS" },
+    { id:"contexts", label:"CONTEXTS" },
+    { id:"insights", label:"INSIGHTS" },
+    { id:"profile",  label:"PROFILE" },
+  ] as const
+
+  return (
+    <header className="desktop-only-nav" style={{ width:"100%", padding:"16px 32px", alignItems:"center", justifyContent:"space-between", position:"sticky", top:0, zIndex:100, backdropFilter:"blur(24px)", WebkitBackdropFilter:"blur(24px)", background:"rgba(255,255,255,0.78)", borderBottom:"1px solid rgba(0,0,0,0.06)", boxShadow:"0 4px 20px rgba(0,0,0,0.03)" }}>
+      <div style={{ display:"flex", alignItems:"center", gap:10, cursor:"pointer" }} onClick={() => navigate("home")}>
+        <BrandMark size={12} />
+        <span style={{ fontFamily:F, fontSize:22, fontWeight:900, color:T1, letterSpacing:"-0.05em" }}>PAUSE.</span>
+      </div>
+
+      <nav style={{ display:"flex", alignItems:"center", gap:6, background:"rgba(0,0,0,0.05)", padding:"4px", borderRadius:99 }}>
+        {tabs.map(({ id, label }) => (
+          <button key={id} onClick={() => navigate(id as Screen)} className="pressable" style={{ background:screen===id ? T1 : "transparent", color:screen===id ? "#FFF" : T2, border:"none", borderRadius:99, padding:"8px 18px", fontFamily:MONO, fontSize:10, fontWeight:screen===id ? 600 : 500, letterSpacing:"0.09em", cursor:"pointer", transition:"all 0.18s ease" }}>
+            {label}
+          </button>
+        ))}
+      </nav>
+
+      <button onClick={onAdd} className="pressable" style={{ display:"inline-flex", alignItems:"center", gap:8, background:ACC, color:"#FFF", border:"none", borderRadius:99, padding:"10px 22px", fontFamily:F, fontSize:14, fontWeight:600, cursor:"pointer", boxShadow:"0 2px 14px rgba(12,12,20,0.18)" }}>
+        <span style={{ fontSize:16, lineHeight:1 }}>+</span> Add a want
+      </button>
+    </header>
+  )
+}
+
 function BottomNav({ screen, navigate, onAdd }: { screen: Screen; navigate: (s: Screen) => void; onAdd: () => void }) {
   const tabs = [
     { id:"home",     label:"WANTS",    Icon:IconWants    },
@@ -545,22 +576,22 @@ function BottomNav({ screen, navigate, onAdd }: { screen: Screen; navigate: (s: 
   ] as const
 
   return (
-    <div style={{ flexShrink:0, padding:`8px 16px max(env(safe-area-inset-bottom, 0px) + 8px, 20px)` }}>
-    <div style={{ background:"rgba(12,10,20,0.92)", backdropFilter:"blur(28px)", WebkitBackdropFilter:"blur(28px)", borderRadius:32, display:"flex", alignItems:"center", justifyContent:"space-between", padding:"8px 8px", boxShadow:"0 8px 40px rgba(0,0,0,0.36), 0 1px 0 rgba(255,255,255,0.07) inset" }}>
-      {tabs.map(({ id, label, Icon }) => (
-        <button key={id} onClick={() => navigate(id as Screen)} className="pressable" style={{ background:screen===id?"rgba(255,255,255,0.12)":"none", border:"none", borderRadius:16, cursor:"pointer", display:"flex", flexDirection:"column", alignItems:"center", gap:3, padding:"8px 12px", transition:"all 0.18s" }}>
-          <NavIcon Icon={Icon} active={screen===id} />
-          <span style={{ fontFamily:MONO, fontSize:7, letterSpacing:"0.09em", color:screen===id?"#FFF":"rgba(255,255,255,0.42)", fontWeight: screen===id ? 600 : 400 }}>{label}</span>
-        </button>
-      ))}
-      <button onClick={onAdd} className="pressable" style={{ background:"#FFF", border:"none", borderRadius:99, width:48, height:48, display:"flex", alignItems:"center", justifyContent:"center", color:T1, fontSize:22, cursor:"pointer", flexShrink:0, boxShadow:"0 2px 12px rgba(255,255,255,0.20)", lineHeight:1 }}>+</button>
-      {tabs2.map(({ id, label, Icon }) => (
-        <button key={id} onClick={() => navigate(id as Screen)} className="pressable" style={{ background:screen===id?"rgba(255,255,255,0.12)":"none", border:"none", borderRadius:16, cursor:"pointer", display:"flex", flexDirection:"column", alignItems:"center", gap:3, padding:"8px 12px", transition:"all 0.18s" }}>
-          <NavIcon Icon={Icon} active={screen===id} />
-          <span style={{ fontFamily:MONO, fontSize:7, letterSpacing:"0.09em", color:screen===id?"#FFF":"rgba(255,255,255,0.42)", fontWeight: screen===id ? 600 : 400 }}>{label}</span>
-        </button>
-      ))}
-    </div>
+    <div className="mobile-only-nav" style={{ flexShrink:0, position:"fixed", bottom:0, left:0, right:0, zIndex:90, padding:`8px 16px max(env(safe-area-inset-bottom, 0px) + 8px, 20px)` }}>
+      <div style={{ maxWidth:430, margin:"0 auto", background:"rgba(12,10,20,0.92)", backdropFilter:"blur(28px)", WebkitBackdropFilter:"blur(28px)", borderRadius:32, display:"flex", alignItems:"center", justifyContent:"space-between", padding:"8px 8px", boxShadow:"0 8px 40px rgba(0,0,0,0.36), 0 1px 0 rgba(255,255,255,0.07) inset" }}>
+        {tabs.map(({ id, label, Icon }) => (
+          <button key={id} onClick={() => navigate(id as Screen)} className="pressable" style={{ background:screen===id?"rgba(255,255,255,0.12)":"none", border:"none", borderRadius:16, cursor:"pointer", display:"flex", flexDirection:"column", alignItems:"center", gap:3, padding:"8px 12px", transition:"all 0.18s" }}>
+            <NavIcon Icon={Icon} active={screen===id} />
+            <span style={{ fontFamily:MONO, fontSize:7, letterSpacing:"0.09em", color:screen===id?"#FFF":"rgba(255,255,255,0.42)", fontWeight: screen===id ? 600 : 400 }}>{label}</span>
+          </button>
+        ))}
+        <button onClick={onAdd} className="pressable" style={{ background:"#FFF", border:"none", borderRadius:99, width:48, height:48, display:"flex", alignItems:"center", justifyContent:"center", color:T1, fontSize:22, cursor:"pointer", flexShrink:0, boxShadow:"0 2px 12px rgba(255,255,255,0.20)", lineHeight:1 }}>+</button>
+        {tabs2.map(({ id, label, Icon }) => (
+          <button key={id} onClick={() => navigate(id as Screen)} className="pressable" style={{ background:screen===id?"rgba(255,255,255,0.12)":"none", border:"none", borderRadius:16, cursor:"pointer", display:"flex", flexDirection:"column", alignItems:"center", gap:3, padding:"8px 12px", transition:"all 0.18s" }}>
+            <NavIcon Icon={Icon} active={screen===id} />
+            <span style={{ fontFamily:MONO, fontSize:7, letterSpacing:"0.09em", color:screen===id?"#FFF":"rgba(255,255,255,0.42)", fontWeight: screen===id ? 600 : 400 }}>{label}</span>
+          </button>
+        ))}
+      </div>
     </div>
   )
 }
@@ -570,8 +601,8 @@ function BottomNav({ screen, navigate, onAdd }: { screen: Screen; navigate: (s: 
 // ─────────────────────────────────────────────────────────────────────────────
 function AppShell({ children, bg }: { children: React.ReactNode; bg?: string }) {
   return (
-    <div style={{ position:"fixed", inset:0, display:"flex", justifyContent:"center", background:"#E2E0EC" }}>
-      <div style={{ width:"100%", maxWidth:430, height:"100%", display:"flex", flexDirection:"column", overflow:"hidden", background:bg||BG_HOME, position:"relative" }}>
+    <div className="app-shell-root" style={{ background: bg || BG_HOME }}>
+      <div className="app-shell-container">
         {children}
       </div>
     </div>
@@ -775,7 +806,7 @@ function Onboarding({ step, setStep, profile, setProfile, onComplete }: {
 function GridView({ wants, onSelect }: { wants: Want[]; onSelect: (id: string) => void }) {
   if (wants.length === 0) return null
   return (
-    <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr", gap:10 }}>
+    <div className="grid-responsive-cards">
       {wants.map(w => {
         const img  = CTX_IMG[w.context]  || { from:"#F0EBE3", to:"#E8E0D4" }
         const blob = CTX_BLOB[w.context] || { fill:"#C8C4C0", emoji:"✦" }
@@ -786,15 +817,15 @@ function GridView({ wants, onSelect }: { wants: Want[]; onSelect: (id: string) =
             opacity:faded?0.50:1, filter:"drop-shadow(0 2px 10px rgba(60,40,120,0.08))"
           }}>
             {/* Mini image */}
-            <div style={{ height:80, background:`linear-gradient(140deg, ${img.from}, ${img.to})`, position:"relative", display:"flex", alignItems:"center", justifyContent:"center" }}>
-              <span style={{ fontSize:44, opacity:0.20, userSelect:"none" }}>{blob.emoji}</span>
+            <div style={{ height:96, background:`linear-gradient(140deg, ${img.from}, ${img.to})`, position:"relative", display:"flex", alignItems:"center", justifyContent:"center" }}>
+              <span style={{ fontSize:48, opacity:0.20, userSelect:"none" }}>{blob.emoji}</span>
               <div style={{ position:"absolute", top:8, right:8 }}><StateTag state={w.state} /></div>
             </div>
             {/* Info */}
-            <div style={{ padding:"10px 12px 12px" }}>
-              <div style={{ marginBottom:4 }}><CtxTag ctx={w.context} /></div>
-              <div style={{ fontFamily:F, fontSize:11, color:T2, marginBottom:2, lineHeight:1.3, overflow:"hidden", textOverflow:"ellipsis", display:"-webkit-box", WebkitLineClamp:2, WebkitBoxOrient:"vertical" as const }}>{w.name}</div>
-              <div style={{ fontFamily:F, fontSize:20, fontWeight:900, color:T1, letterSpacing:"-0.04em", lineHeight:1 }}>${w.price.toLocaleString()}</div>
+            <div style={{ padding:"12px 14px 14px" }}>
+              <div style={{ marginBottom:6 }}><CtxTag ctx={w.context} /></div>
+              <div style={{ fontFamily:F, fontSize:13, fontWeight:500, color:T2, marginBottom:4, lineHeight:1.3, overflow:"hidden", textOverflow:"ellipsis", display:"-webkit-box", WebkitLineClamp:2, WebkitBoxOrient:"vertical" as const }}>{w.name}</div>
+              <div style={{ fontFamily:F, fontSize:22, fontWeight:900, color:T1, letterSpacing:"-0.04em", lineHeight:1 }}>${w.price.toLocaleString()}</div>
             </div>
           </div>
         )
@@ -1850,7 +1881,10 @@ export default function App() {
 
   return (
     <AppShell bg={screenBg[screen]||BG_HOME}>
-      <div key={screen} style={{ flex:1, display:"flex", flexDirection:"column", minHeight:0, overflow:"hidden" }}>
+      {!inFlow && screen!=="card-detail" && (
+        <DesktopHeader screen={screen} navigate={nav} onAdd={startAdd} />
+      )}
+      <div key={screen} style={{ flex:1, display:"flex", flexDirection:"column", minHeight:0 }}>
         {screen==="home"           && <HomeScreen wants={wants} profile={profile} onAdd={startAdd} onSelect={id=>{setSelId(id);nav("card-detail")}} />}
         {screen==="add"            && <AddScreen newWant={newWant} setNewWant={setNewWant} onNext={()=>nav("your-price")} onBack={()=>nav("home")} profile={profile} />}
         {screen==="your-price"     && <YourPrice want={newWant} comps={comps} onNext={()=>nav("why")} onBack={()=>nav("add")} />}

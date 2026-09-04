@@ -94,3 +94,106 @@ button { -webkit-tap-highlight-color: transparent; }
   transform: scale(0.96);
   opacity: 0.85;
 }
+
+/* ─────────────────────────────────────────────────────────────────────────────
+ * RESPONSIVE WEBSITE LAYOUT (DESKTOP VS MOBILE)
+ * ───────────────────────────────────────────────────────────────────────────── */
+
+/* Navigation Visibility */
+.desktop-only-nav {
+  display: none !important;
+}
+.mobile-only-nav {
+  display: block;
+}
+
+@media (min-width: 768px) {
+  .desktop-only-nav {
+    display: flex !important;
+  }
+  .mobile-only-nav {
+    display: none !important;
+  }
+}
+
+/* Responsive Main Shell */
+.app-shell-root {
+  min-height: 100vh;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  overflow-x: hidden;
+  background-attachment: fixed;
+  background-size: cover;
+}
+
+.app-shell-container {
+  width: 100%;
+  max-width: 100%;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  box-sizing: border-box;
+}
+
+@media (min-width: 768px) {
+  .app-shell-container {
+    max-width: 1140px;
+    margin: 0 auto;
+    padding: 0 24px;
+  }
+}
+
+/* Desktop Responsive Grids */
+.grid-responsive-cards {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 12px;
+}
+
+@media (min-width: 640px) {
+  .grid-responsive-cards {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+  }
+}
+
+@media (min-width: 1024px) {
+  .grid-responsive-cards {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+  }
+}
+
+.grid-responsive-2col {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 16px;
+}
+
+@media (min-width: 768px) {
+  .grid-responsive-2col {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 24px;
+  }
+}
+
+/* Responsive Desktop Card Modals for Flow Screens */
+.flow-screen-container {
+  width: 100%;
+  max-width: 100%;
+  margin: 0 auto;
+}
+
+@media (min-width: 640px) {
+  .flow-screen-container {
+    max-width: 580px;
+    margin: 20px auto;
+    border-radius: 28px;
+    box-shadow: 0 20px 60px rgba(12, 10, 20, 0.12);
+  }
+}
+
