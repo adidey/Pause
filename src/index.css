@@ -9,11 +9,14 @@
 }
 
 html, body, #root {
-  height: 100%;
+  min-height: 100%;
   width: 100%;
   margin: 0;
   padding: 0;
-  overscroll-behavior: none;
+  background-color: #F4F3F7;
+  color: #0C0C14;
+  font-family: 'Inter', system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
 }
 
 * { box-sizing: border-box; }
@@ -21,83 +24,48 @@ html, body, #root {
 .hide-scroll::-webkit-scrollbar { display: none; }
 .hide-scroll { -ms-overflow-style: none; scrollbar-width: none; }
 
-/* Screen transition */
-@keyframes screenIn {
-  from { opacity: 0; transform: translateY(22px); }
-  to   { opacity: 1; transform: translateY(0); }
-}
-@keyframes slideUp {
-  from { opacity: 0; transform: translateY(40px); }
-  to   { opacity: 1; transform: translateY(0); }
-}
-@keyframes fadeIn {
-  from { opacity: 0; }
-  to   { opacity: 1; }
-}
-@keyframes scaleIn {
-  from { opacity: 0; transform: scale(0.94); }
-  to   { opacity: 1; transform: scale(1); }
-}
-@keyframes cardIn {
-  from { opacity: 0; transform: translateY(16px) scale(0.98); }
-  to   { opacity: 1; transform: translateY(0) scale(1); }
-}
-
-.screen-in {
-  animation: screenIn 0.42s cubic-bezier(0.22, 1, 0.36, 1) both;
-}
-.slide-up {
-  animation: slideUp 0.38s cubic-bezier(0.22, 1, 0.36, 1) both;
-}
-.fade-in {
-  animation: fadeIn 0.3s ease both;
-}
-.scale-in {
-  animation: scaleIn 0.35s cubic-bezier(0.22, 1, 0.36, 1) both;
-}
-.card-in {
-  animation: cardIn 0.4s cubic-bezier(0.22, 1, 0.36, 1) both;
-}
-
-/* Ticket deck swipe transitions */
-@keyframes ticketInRight {
-  0%   { opacity: 0; transform: translateX(60px) scale(0.93) rotateY(4deg); }
-  60%  { opacity: 1; }
-  100% { opacity: 1; transform: translateX(0) scale(1) rotateY(0deg); }
-}
-@keyframes ticketInLeft {
-  0%   { opacity: 0; transform: translateX(-60px) scale(0.93) rotateY(-4deg); }
-  60%  { opacity: 1; }
-  100% { opacity: 1; transform: translateX(0) scale(1) rotateY(0deg); }
-}
-.ticket-in-right {
-  animation: ticketInRight 0.40s cubic-bezier(0.16, 1, 0.3, 1) both;
-}
-.ticket-in-left {
-  animation: ticketInLeft 0.40s cubic-bezier(0.16, 1, 0.3, 1) both;
-}
-
-/* Staggered delays */
-.delay-1 { animation-delay: 0.05s; }
-.delay-2 { animation-delay: 0.10s; }
-.delay-3 { animation-delay: 0.15s; }
-.delay-4 { animation-delay: 0.20s; }
-.delay-5 { animation-delay: 0.25s; }
-
-/* Press feel on buttons */
-button { -webkit-tap-highlight-color: transparent; }
-.pressable {
-  transition: transform 0.12s ease, opacity 0.12s ease;
-  cursor: pointer;
-}
-.pressable:active {
-  transform: scale(0.96);
-  opacity: 0.85;
-}
-
 /* ─────────────────────────────────────────────────────────────────────────────
- * RESPONSIVE WEBSITE LAYOUT (DESKTOP VS MOBILE)
+ * GLOBAL CANVAS & 12-COLUMN RESPONSIVE GRID SYSTEM
  * ───────────────────────────────────────────────────────────────────────────── */
+
+.app-shell-root {
+  min-height: 100vh;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  overflow-x: hidden;
+  background-color: #F4F3F7;
+}
+
+.app-shell-container {
+  width: 100%;
+  max-width: 1440px;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  box-sizing: border-box;
+  margin: 0 auto;
+}
+
+/* Responsive Content Insets */
+.responsive-padding {
+  padding-inline: 20px;
+}
+
+@media (min-width: 640px) {
+  .responsive-padding {
+    padding-inline: 24px;
+  }
+}
+
+@media (min-width: 1024px) {
+  .responsive-padding {
+    padding-inline: max(32px, 4vw);
+  }
+}
 
 /* Navigation Visibility */
 .desktop-only-nav {
@@ -116,84 +84,210 @@ button { -webkit-tap-highlight-color: transparent; }
   }
 }
 
-/* Responsive Main Shell */
-.app-shell-root {
-  min-height: 100vh;
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+/* ─────────────────────────────────────────────────────────────────────────────
+ * TICKET CARD WITH PHYSICAL INWARD CUTOUTS
+ * ───────────────────────────────────────────────────────────────────────────── */
+
+.ticket-wrapper {
   position: relative;
-  overflow-x: hidden;
-  background-attachment: fixed;
-  background-size: cover;
+  border-radius: 24px;
+  overflow: hidden;
+  box-shadow: 0 8px 32px rgba(12, 10, 20, 0.08);
+  transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.2s ease;
 }
 
-.app-shell-container {
-  width: 100%;
-  max-width: 100%;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  position: relative;
-  box-sizing: border-box;
+.ticket-wrapper:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 16px 40px rgba(12, 10, 20, 0.12);
 }
 
-@media (min-width: 768px) {
-  .app-shell-container {
-    max-width: 1140px;
-    margin: 0 auto;
-    padding: 0 24px;
-  }
+.ticket-cutout-left {
+  position: absolute;
+  left: -10px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background-color: #F4F3F7;
+  z-index: 10;
+  box-shadow: inset -2px 0 4px rgba(0,0,0,0.06);
 }
 
-/* Desktop Responsive Grids */
-.grid-responsive-cards {
+.ticket-cutout-right {
+  position: absolute;
+  right: -10px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background-color: #F4F3F7;
+  z-index: 10;
+  box-shadow: inset 2px 0 4px rgba(0,0,0,0.06);
+}
+
+/* ─────────────────────────────────────────────────────────────────────────────
+ * EDITORIAL 12-COLUMN BENTO GRID SYSTEM
+ * ───────────────────────────────────────────────────────────────────────────── */
+
+.bento-grid-12 {
   display: grid;
-  grid-template-columns: 1fr;
-  gap: 12px;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 14px;
 }
 
 @media (min-width: 640px) {
-  .grid-responsive-cards {
-    grid-template-columns: repeat(2, 1fr);
-    gap: 16px;
-  }
-}
-
-@media (min-width: 1024px) {
-  .grid-responsive-cards {
-    grid-template-columns: repeat(3, 1fr);
+  .bento-grid-12 {
+    grid-template-columns: repeat(6, 1fr);
     gap: 20px;
   }
 }
 
-.grid-responsive-2col {
+@media (min-width: 1024px) {
+  .bento-grid-12 {
+    grid-template-columns: repeat(12, 1fr);
+    gap: 24px;
+  }
+
+  .bento-span-3  { grid-column: span 3; }
+  .bento-span-4  { grid-column: span 4; }
+  .bento-span-6  { grid-column: span 6; }
+  .bento-span-8  { grid-column: span 8; }
+  .bento-span-12 { grid-column: span 12; }
+}
+
+.bento-card {
+  border-radius: 28px;
+  overflow: hidden;
+  position: relative;
+  transition: transform 0.22s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.22s ease;
+}
+
+.bento-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 16px 40px rgba(12, 10, 20, 0.09);
+}
+
+.bento-card-dark {
+  background: #0B0B10;
+  color: #F7F6F2;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.bento-card-light {
+  background: #FFFFFF;
+  border: 1px solid rgba(0, 0, 0, 0.06);
+  color: #0C0C14;
+}
+
+.bento-card-soft {
+  background: #EAE8F2;
+  border: 1px solid rgba(0, 0, 0, 0.05);
+  color: #0C0C14;
+}
+
+.text-lime-accent {
+  color: #D2F535;
+}
+.bg-lime-accent {
+  background-color: #D2F535;
+}
+
+/* ─────────────────────────────────────────────────────────────────────────────
+ * HORIZONTAL STACK CAROUSEL & GRID WANTS
+ * ───────────────────────────────────────────────────────────────────────────── */
+
+.desktop-stack-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 24px;
+  position: relative;
+  padding: 10px 0;
+  width: 100%;
+}
+
+.stack-primary-card {
+  width: 100%;
+  max-width: 480px;
+  flex-shrink: 0;
+  z-index: 20;
+}
+
+.stack-peek-card {
+  width: 240px;
+  flex-shrink: 0;
+  opacity: 0.40;
+  filter: blur(1px);
+  transform: scale(0.92);
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  cursor: pointer;
+}
+
+.stack-peek-card:hover {
+  opacity: 0.70;
+  filter: blur(0px);
+  transform: scale(0.96);
+}
+
+/* Grid Wants Intelligent Filling */
+.grid-wants-responsive {
   display: grid;
   grid-template-columns: 1fr;
   gap: 16px;
 }
 
-@media (min-width: 768px) {
-  .grid-responsive-2col {
+@media (min-width: 640px) {
+  .grid-wants-responsive {
     grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+  }
+}
+
+@media (min-width: 1024px) {
+  .grid-wants-responsive {
+    grid-template-columns: repeat(3, 1fr);
     gap: 24px;
   }
 }
 
-/* Responsive Desktop Card Modals for Flow Screens */
-.flow-screen-container {
-  width: 100%;
-  max-width: 100%;
-  margin: 0 auto;
-}
-
-@media (min-width: 640px) {
-  .flow-screen-container {
-    max-width: 580px;
-    margin: 20px auto;
-    border-radius: 28px;
-    box-shadow: 0 20px 60px rgba(12, 10, 20, 0.12);
+@media (min-width: 1280px) {
+  .grid-wants-responsive {
+    grid-template-columns: repeat(4, 1fr);
   }
 }
 
+/* Profile 2-Column Layout */
+.grid-profile-responsive {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 24px;
+}
+
+@media (min-width: 868px) {
+  .grid-profile-responsive {
+    grid-template-columns: 1fr 1.2fr;
+    gap: 36px;
+  }
+}
+
+/* Restrained motion */
+@keyframes fadeInCross {
+  from { opacity: 0; transform: scale(0.98); }
+  to   { opacity: 1; transform: scale(1); }
+}
+
+.crossfade-in {
+  animation: fadeInCross 0.22s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+button { -webkit-tap-highlight-color: transparent; }
+.pressable {
+  transition: transform 0.12s ease, opacity 0.12s ease;
+  cursor: pointer;
+}
+.pressable:active {
+  transform: scale(0.96);
+  opacity: 0.85;
+}
