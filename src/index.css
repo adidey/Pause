@@ -1,0 +1,96 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,300;1,400&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&display=swap');
+@import 'tailwindcss';
+
+@theme {
+  --font-display: 'Inter', system-ui, sans-serif;
+  --font-body: 'Inter', system-ui, sans-serif;
+  --font-mono: 'DM Mono', monospace;
+}
+
+html, body, #root {
+  height: 100%;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  overscroll-behavior: none;
+}
+
+* { box-sizing: border-box; }
+
+.hide-scroll::-webkit-scrollbar { display: none; }
+.hide-scroll { -ms-overflow-style: none; scrollbar-width: none; }
+
+/* Screen transition */
+@keyframes screenIn {
+  from { opacity: 0; transform: translateY(22px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(40px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+@keyframes scaleIn {
+  from { opacity: 0; transform: scale(0.94); }
+  to   { opacity: 1; transform: scale(1); }
+}
+@keyframes cardIn {
+  from { opacity: 0; transform: translateY(16px) scale(0.98); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+.screen-in {
+  animation: screenIn 0.42s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+.slide-up {
+  animation: slideUp 0.38s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+.fade-in {
+  animation: fadeIn 0.3s ease both;
+}
+.scale-in {
+  animation: scaleIn 0.35s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+.card-in {
+  animation: cardIn 0.4s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+/* Ticket deck swipe transitions */
+@keyframes ticketInRight {
+  0%   { opacity: 0; transform: translateX(60px) scale(0.93) rotateY(4deg); }
+  60%  { opacity: 1; }
+  100% { opacity: 1; transform: translateX(0) scale(1) rotateY(0deg); }
+}
+@keyframes ticketInLeft {
+  0%   { opacity: 0; transform: translateX(-60px) scale(0.93) rotateY(-4deg); }
+  60%  { opacity: 1; }
+  100% { opacity: 1; transform: translateX(0) scale(1) rotateY(0deg); }
+}
+.ticket-in-right {
+  animation: ticketInRight 0.40s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+.ticket-in-left {
+  animation: ticketInLeft 0.40s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+/* Staggered delays */
+.delay-1 { animation-delay: 0.05s; }
+.delay-2 { animation-delay: 0.10s; }
+.delay-3 { animation-delay: 0.15s; }
+.delay-4 { animation-delay: 0.20s; }
+.delay-5 { animation-delay: 0.25s; }
+
+/* Press feel on buttons */
+button { -webkit-tap-highlight-color: transparent; }
+.pressable {
+  transition: transform 0.12s ease, opacity 0.12s ease;
+  cursor: pointer;
+}
+.pressable:active {
+  transform: scale(0.96);
+  opacity: 0.85;
+}
