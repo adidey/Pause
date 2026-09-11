@@ -1,7 +1,8 @@
 import React, { useState } from "react"
 import { Want, UserProfile } from "../types"
 import { WantCard } from "./WantCard"
-import { DarkGroundingVisual } from "./InsightVisuals"
+import { DarkWave } from "./visuals/DarkWave"
+import { ProductGlow } from "./visuals/ProductGlow"
 
 interface WantStackProps {
   wants: Want[]
@@ -122,21 +123,8 @@ export function WantStack({ wants, profile, mode, setMode, onSelect }: WantStack
         {/* Right Column (Span 7): Card Fan Stack Visual */}
         <div className="lg:col-span-7 relative min-h-[460px] flex flex-col items-center justify-center">
           
-          {/* Ambient Glows */}
-          <div
-            className="absolute top-1/2 left-1/4 -translate-y-1/2 w-72 h-72 rounded-full pointer-events-none z-0"
-            style={{
-              background: "radial-gradient(circle, rgba(216, 207, 255, 0.55) 0%, rgba(216, 207, 255, 0) 70%)",
-              filter: "blur(48px)",
-            }}
-          />
-          <div
-            className="absolute top-1/2 right-1/4 -translate-y-1/2 w-72 h-72 rounded-full pointer-events-none z-0"
-            style={{
-              background: "radial-gradient(circle, rgba(208, 234, 223, 0.55) 0%, rgba(208, 234, 223, 0) 70%)",
-              filter: "blur(48px)",
-            }}
-          />
+          {/* Atmospheric Ambient Glow behind Hero Card */}
+          <ProductGlow context={currentWant?.context} />
 
           {currentWant ? (
             <div className="relative w-full max-w-[420px] min-h-[440px] flex items-center justify-center">
@@ -244,8 +232,8 @@ export function WantStack({ wants, profile, mode, setMode, onSelect }: WantStack
         </div>
       </div>
 
-      {/* Grounding 3D Dark Wave Object at bottom */}
-      <DarkGroundingVisual />
+      {/* R3F Grounding Dark Wave Object */}
+      <DarkWave />
     </div>
   )
 }

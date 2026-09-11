@@ -1,5 +1,6 @@
 import React, { useState } from "react"
 import { UserProfile, Period, COMPS, CompKey } from "../types"
+import { IridescentOrb } from "./visuals/IridescentOrb"
 
 interface ProfileBentoProps {
   profile: UserProfile
@@ -99,18 +100,10 @@ export function ProfileBento({ profile, setProfile }: ProfileBentoProps) {
           </p>
         </div>
 
-        {/* Right Top Card: Dark 3D Orb Highlight Banner (Span 5) */}
+        {/* Right Top Card: Dark 3D Fresnel Orb Highlight Banner (Span 5) */}
         <div className="lg:col-span-5 rounded-[28px] bg-[#0D0D14] text-white p-8 relative overflow-hidden flex flex-col justify-between shadow-2xl min-h-[200px]">
-          {/* 3D Glossy Ambient Sphere Graphic */}
-          <div
-            className="absolute -right-12 -top-12 w-64 h-64 rounded-full pointer-events-none"
-            style={{
-              background: `
-                radial-gradient(circle at 35% 30%, rgba(255, 255, 255, 0.4) 0%, rgba(183, 176, 232, 0.3) 35%, rgba(17, 17, 24, 0.95) 75%)
-              `,
-              boxShadow: "inset 0 0 40px rgba(0,0,0,0.8), 0 0 60px rgba(183, 176, 232, 0.2)",
-            }}
-          />
+          {/* R3F 3D Fresnel Charcoal Sphere */}
+          <IridescentOrb mode="profile" />
 
           <div className="font-mono text-xs font-bold tracking-widest text-white/50 uppercase z-10">
             PHILOSOPHY
@@ -345,7 +338,7 @@ export function ProfileBento({ profile, setProfile }: ProfileBentoProps) {
               <button
                 onClick={() => handleTogglePref("remindPause")}
                 className={`w-11 h-6 rounded-full transition-colors p-1 flex items-center ${
-                  profile.remindPause ? "bg-[#111118]" : "bg-gray-300"
+                  profile.remindPause ? "bg-[#111118]" : "bg-gray-[#E5E5EA]"
                 }`}
               >
                 <div

@@ -1,12 +1,10 @@
 import React from "react"
 import { Want } from "../types"
-import {
-  IridescentSphereVisual,
-  StackedGlassVisual,
-  OrbitalRingVisual,
-  ColumnObjectVisual,
-  TrendLineVisual,
-} from "./InsightVisuals"
+import { InsightCurve } from "./visuals/InsightCurve"
+import { GlassStack } from "./visuals/GlassStack"
+import { OrbitalRing } from "./visuals/OrbitalRing"
+import { IridescentOrb } from "./visuals/IridescentOrb"
+import { FloatingBlocks } from "./visuals/FloatingBlocks"
 
 interface InsightsProps {
   wants: Want[]
@@ -87,7 +85,7 @@ export function InsightsBento({ wants }: InsightsProps) {
             </div>
           </div>
 
-          <TrendLineVisual />
+          <InsightCurve />
 
           <div className="flex items-center justify-between text-xs font-mono text-emerald-400 pt-3 border-t border-white/10">
             <span>↑ 12%</span>
@@ -95,7 +93,7 @@ export function InsightsBento({ wants }: InsightsProps) {
           </div>
         </div>
 
-        {/* Card 2: TOTAL CONSIDERED (Span 4, Stacked Glass Visual) */}
+        {/* Card 2: TOTAL CONSIDERED (Span 4, Glass Stack Visual) */}
         <div className="bento-span-4 bento-card bento-card-light p-7 flex flex-col justify-between min-h-[260px]">
           <div>
             <div className="eyebrow-tag mb-3">
@@ -109,7 +107,7 @@ export function InsightsBento({ wants }: InsightsProps) {
             </div>
           </div>
 
-          <StackedGlassVisual />
+          <GlassStack />
         </div>
 
         {/* Card 3: AVERAGE DECISION TIME (Span 4, Orbital Rings Visual) */}
@@ -126,10 +124,10 @@ export function InsightsBento({ wants }: InsightsProps) {
             </div>
           </div>
 
-          <OrbitalRingVisual />
+          <OrbitalRing />
         </div>
 
-        {/* Card 4: POTENTIAL SPENDING AVOIDED (Span 7, Iridescent Spheres) */}
+        {/* Card 4: POTENTIAL SPENDING AVOIDED (Span 7, Iridescent Orbs) */}
         <div className="bento-span-7 bento-card bento-card-light p-7 flex flex-col justify-between min-h-[260px]">
           <div className="flex justify-between items-start">
             <div>
@@ -149,10 +147,10 @@ export function InsightsBento({ wants }: InsightsProps) {
             </div>
           </div>
 
-          <IridescentSphereVisual />
+          <IridescentOrb mode="insight" />
         </div>
 
-        {/* Card 5: BIGGEST AREA OF DESIRE (Span 5, 3D Columns) */}
+        {/* Card 5: BIGGEST AREA OF DESIRE (Span 5, 3D Floating Blocks) */}
         <div className="bento-span-5 bento-card bento-card-light p-7 flex flex-col justify-between min-h-[260px]">
           <div>
             <div className="eyebrow-tag mb-3">
@@ -169,7 +167,7 @@ export function InsightsBento({ wants }: InsightsProps) {
             </div>
           </div>
 
-          <ColumnObjectVisual />
+          <FloatingBlocks />
         </div>
 
         {/* Card 6: WANTS BY CONTEXT (Span 12, Progress Breakdown) */}
